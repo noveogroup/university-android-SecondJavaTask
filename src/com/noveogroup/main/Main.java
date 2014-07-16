@@ -8,6 +8,7 @@ import com.noveogroup.model.TreeElement;
 import com.noveogroup.tree.BinaryTree;
 import com.noveogroup.tree.BinaryTreeImpl;
 
+import java.io.*;
 import java.util.*;
 
 public class Main {
@@ -15,9 +16,7 @@ public class Main {
     public static void main(String[] args) {
         //create BinaryTree
         BinaryTree<Integer, TreeElement> tree = generateTree();
-
-        for (Iterator<TreeElement> iterator = tree.getIterator(); iterator.hasNext(); )
-            System.out.println(iterator.next());
+        printTree(tree);
 
         System.out.println();
         try {
@@ -25,8 +24,7 @@ public class Main {
         } catch (NoSuchTreeElementException e) {
             System.out.println(e);
         }
-        for (Iterator<TreeElement> iterator = tree.getIterator(); iterator.hasNext(); )
-            System.out.println(iterator.next());
+        printTree(tree);
 
         try {
             tree.addElement(2, new ElementImpl(2, "2"));
@@ -39,6 +37,27 @@ public class Main {
         } catch (BinaryTreeException e) {
             System.out.println(e);
         }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            new ObjectOutputStream(baos).writeObject(tree);
+        } catch (IOException e) { }
+        byte[] array = baos.toByteArray();
+        System.out.println("Tree size in bytes: " + array.length);
+
+        try {
+            @SuppressWarnings("unchecked")
+            BinaryTree<Integer, TreeElement> tree2 =
+                    (BinaryTree<Integer, TreeElement>)new ObjectInputStream(new ByteArrayInputStream(array)).readObject();
+            printTree(tree2);
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e);
+        }
+    }
+
+    static void printTree(BinaryTree<?, ?> tree) {
+        for (Iterator<?> iterator = tree.getIterator(); iterator.hasNext(); )
+            System.out.println(iterator.next());
     }
 
     static BinaryTree<Integer, TreeElement> generateTree() {

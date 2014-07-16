@@ -3,6 +3,9 @@ package com.noveogroup.tree;
 import com.noveogroup.exception.ElementAlreadyExistsException;
 import com.noveogroup.exception.NoSuchTreeElementException;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
@@ -109,13 +112,36 @@ public class BinaryTreeImpl<K extends Comparable<? super K>,V> implements Binary
         };
     }
 
+    public int getLeafCount() {
+        return getLeafCount(root);
+    }
+
+    private int getLeafCount(Node node) {
+        if (node == null)
+            return 0;
+        else if (node.left == null && node.right == null)
+            return 1;
+        else
+            return getLeafCount(node.left) + getLeafCount(node.right);
+    }
+
     private void collectValues(Node<K, V> node, List<V> list) {
         if (node.left != null) collectValues(node.left, list);
         list.add(node.value);
         if (node.right != null) collectValues(node.right, list);
     }
 
-    private static class Node<K, V> {
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(getLeafCount());
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        System.out.println("Read leaf count: " + in.readInt());
+    }
+
+    private static class Node<K, V> implements Serializable {
         K key;
         V value;
         Node<K, V> left;
