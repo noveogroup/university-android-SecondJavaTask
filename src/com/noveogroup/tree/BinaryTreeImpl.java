@@ -3,9 +3,10 @@ package com.noveogroup.tree;
 import com.noveogroup.exception.ElementAlreadyExistsException;
 import com.noveogroup.exception.NoSuchTreeElementException;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class BinaryTreeImpl<K extends Comparable<? super K>,V> implements BinaryTree<K,V> {
+public class BinaryTreeImpl<K extends Comparable<? super K>,V> implements BinaryTree<K,V>, Serializable {
 
     private Node<K, V> root;
 
@@ -68,7 +69,7 @@ public class BinaryTreeImpl<K extends Comparable<? super K>,V> implements Binary
                     node.key = mostLeftParent.left.key;
                     node.value = mostLeftParent.left.value;
                     mostLeftParent.left = null;
-                    return node.right;
+                    return node;
                 }
             }
         } else if (compResult < 0) {
@@ -125,6 +126,15 @@ public class BinaryTreeImpl<K extends Comparable<? super K>,V> implements Binary
             this.value = value;
         }
 
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "key=" + key +
+                    ", value=" + value +
+                    ", " + (left == null ? "" : "L") +
+                    ", " + (right == null ? "" : "R") +
+                    '}';
+        }
     }
 
 }
