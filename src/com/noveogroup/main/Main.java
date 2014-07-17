@@ -8,6 +8,7 @@ import com.noveogroup.tree.BinaryTree;
 import com.noveogroup.item.TreeItem;
 import com.noveogroup.tree.BinaryTreeImpl;
 
+import java.io.*;
 import java.util.Iterator;
 
 public class Main {
@@ -42,7 +43,31 @@ public class Main {
             while(iterator.hasNext()) {
                 System.out.print(iterator.next().getKey() + " ");
             }
-        } catch (BinaryTreeException e) {
+            System.out.println("");
+
+            FileOutputStream file_out = new FileOutputStream("tree.dat");
+            ObjectOutputStream stream_out = new ObjectOutputStream(file_out);
+            stream_out.writeObject(tree);
+            stream_out.close();
+
+            FileInputStream file_in = new FileInputStream("tree.dat");
+            ObjectInputStream stream_in = new ObjectInputStream(file_in);
+            @SuppressWarnings("unchecked")
+            BinaryTree<Integer, TreeItem> tree_from_file = (BinaryTree<Integer, TreeItem>)stream_in.readObject();
+            stream_in.close();
+            System.out.print(tree.count() + " elements: ");
+            iterator = tree_from_file.getIterator();
+            while(iterator.hasNext()) {
+                System.out.print(iterator.next().getKey() + " ");
+            }
+
+        } catch (BinaryTreeException e)  {
+
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+
+        } catch (ClassNotFoundException e) {
 
         }
     }

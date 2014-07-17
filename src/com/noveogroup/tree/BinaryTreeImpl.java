@@ -16,7 +16,7 @@ import java.util.Iterator;
  * Sample implementation.
  */
 public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
-             implements BinaryTree <K, V>, Serializable {
+             implements BinaryTree <K, V> {
     TreeElement<K, V> root;
 
     @Override
@@ -67,7 +67,8 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
         }
     }
 
-    protected void addElement(TreeElement<K, V> element, TreeElement<K, V> starting_element) throws BinaryTreeException {
+    protected void addElement(TreeElement<K, V> element, TreeElement<K, V> starting_element)
+                   throws BinaryTreeException {
         TreeTuple<K, V> tuple = search(element.getKey(), starting_element);
         if(tuple.child != null) {
             System.out.println("Here an exception throw should be.");
@@ -121,13 +122,11 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
     private void writeObject(ObjectOutputStream stream) throws IOException{
         stream.defaultWriteObject();
         stream.writeInt(count());
-        stream.close();
 
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException{
         stream.defaultReadObject();
         System.out.println("The tree contains " + stream.readInt() + " elements.");
-        stream.close();
     }
 }
