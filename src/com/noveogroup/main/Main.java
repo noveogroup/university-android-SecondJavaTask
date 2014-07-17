@@ -21,22 +21,26 @@ public class Main {
             tree.addElement(250, new Peach());
             tree.addElement(170, new Peach());
 
+            System.out.print(tree.count() + " elements: ");
             Iterator<TreeElement<Integer, TreeItem>> iterator = tree.getIterator();
             while(iterator.hasNext()) {
-                System.out.println(iterator.next().getKey());
+                System.out.print(iterator.next().getKey() + " ");
             }
-            System.out.println("==========================");
-            tree.removeElement(100);
-            iterator = tree.getIterator();
-            while(iterator.hasNext()) {
-                System.out.println(iterator.next().getKey());
-            }
+            System.out.println("");
 
-            System.out.println("==========================");
-            tree.removeElement(170);
+            tree.removeElement(100);
+            System.out.print(tree.count() + " elements: ");
             iterator = tree.getIterator();
             while(iterator.hasNext()) {
-                System.out.println(iterator.next().getKey());
+                System.out.print(iterator.next().getKey() + " ");
+            }
+            System.out.println("");
+
+            tree.removeElement(170);
+            System.out.print(tree.count() + " elements: ");
+            iterator = tree.getIterator();
+            while(iterator.hasNext()) {
+                System.out.print(iterator.next().getKey() + " ");
             }
         } catch (BinaryTreeException e) {
 

@@ -6,12 +6,17 @@ import com.noveogroup.model.TreeElementImpl;
 import com.noveogroup.model.TreeTuple;
 import com.noveogroup.item.TreeItem;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 
 /**
  * Sample implementation.
  */
-public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem> implements BinaryTree <K, V> {
+public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
+             implements BinaryTree <K, V>, Serializable {
     TreeElement<K, V> root;
 
     @Override
@@ -100,5 +105,29 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
             temp_parent = temp;
             temp = temp.getChild(is_big);
         }
+    }
+
+    @Override
+    public int count() {
+        Iterator<TreeElement<K, V>> iterator = getIterator();
+        int n = 0;
+        while(iterator.hasNext()) {
+            iterator.next();
+            ++n;
+        }
+        return n;
+    }
+
+    private void writeObject(ObjectOutputStream stream) throws IOException{
+        stream.defaultWriteObject();
+        stream.writeInt(count());
+        stream.close();
+
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException{
+        stream.defaultReadObject();
+        System.out.println("The tree contains " + stream.readInt() + " elements.");
+        stream.close();
     }
 }
