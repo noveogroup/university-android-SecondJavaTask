@@ -47,8 +47,7 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
 
     @Override
     public Iterator<TreeElement<K, V>> getIterator() {
-        //TODO
-        return null;
+        return (new TreeIterator<K, V>(root));
     }
 
     protected void putElement(TreeElement<K, V> child, TreeElement<K, V> parent, boolean is_big) {
@@ -83,7 +82,10 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
 
         TreeElement <K, V> temp = starting_element;
         TreeElement <K, V> temp_parent = temp.getParent();
-        boolean is_big = (temp_parent.getChild(true) == temp);
+        boolean is_big = true;
+        if(temp_parent != null) {
+            is_big = (temp_parent.getChild(true) == temp);
+        }
 
         while(true) {
             if(temp == null || temp.getKey().compareTo(key) == 0) {

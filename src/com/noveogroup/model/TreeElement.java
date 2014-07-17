@@ -3,7 +3,7 @@ package com.noveogroup.model;
 /**
  * Interface for tree elements. You can change it as you want.
  */
-public interface TreeElement <K, V> {
+public interface TreeElement<K, V> {
     K getKey();
     V getItem();
     TreeElement<K, V> getParent();
