@@ -3,6 +3,7 @@ package com.noveogroup.main;
 import com.noveogroup.exception.BinaryTreeException;
 import com.noveogroup.exception.ElementAlreadyExistsException;
 import com.noveogroup.exception.NoSuchTreeElementException;
+import com.noveogroup.model.DataStructure;
 import com.noveogroup.model.FirstTreeElementChild;
 import com.noveogroup.model.SecondTreeElementChild;
 import com.noveogroup.model.TreeElement;
@@ -10,6 +11,7 @@ import com.noveogroup.tree.BinaryTree;
 import com.noveogroup.tree.BinaryTreeImpl;
 
 import java.io.*;
+import java.lang.annotation.Annotation;
 import java.util.*;
 
 public class Main {
@@ -60,11 +62,27 @@ public class Main {
         } catch (IOException | ClassNotFoundException e) {
             System.err.println(e);
         }
+        showInfo(tree);
     }
 
     static void printTree(BinaryTree<?, ?> tree) {
         for (Iterator<?> iterator = tree.getIterator(); iterator.hasNext(); )
             System.out.println(iterator.next());
+    }
+
+    static void showInfo(Object obj) {
+        Class<?> cls = obj.getClass();
+        for (Annotation at : cls.getAnnotations()) {
+            if (at.annotationType() == DataStructure.class) {
+                System.out.println(cls.getSimpleName() + " is a data structure with operations:");
+                DataStructure ds = (DataStructure)at;
+                for (int op : ds.value()) {
+                    System.out.println(DataStructure.OPERATIONS[op]);
+                }
+                return;
+            }
+        }
+        System.out.println(cls.getSimpleName() + " is not a data structure");
     }
 
     static BinaryTree<Integer, TreeElement> generateTree() {
