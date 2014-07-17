@@ -5,4 +5,13 @@ package com.noveogroup.exception;
  * You can change it and create subclasses (ElementAlreadyExistsException, for example).
  */
 public class BinaryTreeException extends Exception {
+    protected TreeExceptionType type;
+
+    public BinaryTreeException(TreeExceptionType type) {
+        this.type = type;
+    }
+
+    public TreeExceptionType getType() {
+        return type;
+    }
 }

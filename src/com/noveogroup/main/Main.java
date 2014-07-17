@@ -1,6 +1,6 @@
 package com.noveogroup.main;
 
-import com.noveogroup.exception.BinaryTreeException;
+import com.noveogroup.exception.*;
 import com.noveogroup.item.Leaf;
 import com.noveogroup.item.Peach;
 import com.noveogroup.model.TreeElement;
@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.Iterator;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
         BinaryTree<Integer, TreeItem> tree = new BinaryTreeImpl<Integer, TreeItem>();
         try {
             tree.addElement(100, new Leaf());
@@ -24,22 +24,6 @@ public class Main {
 
             System.out.print(tree.count() + " elements: ");
             Iterator<TreeElement<Integer, TreeItem>> iterator = tree.getIterator();
-            while(iterator.hasNext()) {
-                System.out.print(iterator.next().getKey() + " ");
-            }
-            System.out.println("");
-
-            tree.removeElement(100);
-            System.out.print(tree.count() + " elements: ");
-            iterator = tree.getIterator();
-            while(iterator.hasNext()) {
-                System.out.print(iterator.next().getKey() + " ");
-            }
-            System.out.println("");
-
-            tree.removeElement(170);
-            System.out.print(tree.count() + " elements: ");
-            iterator = tree.getIterator();
             while(iterator.hasNext()) {
                 System.out.print(iterator.next().getKey() + " ");
             }
@@ -60,15 +44,41 @@ public class Main {
             while(iterator.hasNext()) {
                 System.out.print(iterator.next().getKey() + " ");
             }
+            System.out.println("");
+            tree.addElement(200, new Peach());
 
-        } catch (BinaryTreeException e)  {
+        } catch (TreeElementException exception)  {
+            if(exception.getType() == TreeExceptionType.ALREADY_EXISTS) {
+                @SuppressWarnings("unchecked")
+                TreeElement<Integer, TreeItem> element = (TreeElement<Integer, TreeItem>) exception.getElement();
+                System.out.println("Exception: Element "
+                        + element.getKey()
+                        + " you are willing to add is already on the tree. It's a "
+                        + element.getItem().getClass().getSimpleName() + "!");
+            }
+        }
 
-        } catch (FileNotFoundException e) {
+        try {
+            tree.removeElement(100);
+            System.out.print(tree.count() + " elements: ");
+            Iterator<TreeElement<Integer, TreeItem>> iterator = tree.getIterator();
+            while(iterator.hasNext()) {
+                System.out.print(iterator.next().getKey() + " ");
+            }
+            System.out.println("");
 
-        } catch (IOException e) {
+            tree.removeElement(170);
+            System.out.print(tree.count() + " elements: ");
+            iterator = tree.getIterator();
+            while(iterator.hasNext()) {
+                System.out.print(iterator.next().getKey() + " ");
+            }
+            System.out.println("");
 
-        } catch (ClassNotFoundException e) {
+            tree.removeElement(500);
 
+        } catch (BinaryTreeException exception) {
+            System.out.println("Exception.");
         }
     }
 }

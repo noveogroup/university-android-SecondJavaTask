@@ -1,6 +1,9 @@
 package com.noveogroup.tree;
 
 import com.noveogroup.exception.BinaryTreeException;
+import com.noveogroup.exception.ElementAlreadyExistsException;
+import com.noveogroup.exception.ElementIsAbsentException;
+import com.noveogroup.exception.TreeElementException;
 import com.noveogroup.model.TreeElement;
 import com.noveogroup.model.TreeElementImpl;
 import com.noveogroup.model.TreeTuple;
@@ -20,7 +23,7 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
     TreeElement<K, V> root;
 
     @Override
-    public void addElement(K key, V item) throws BinaryTreeException {
+    public void addElement(K key, V item) throws ElementAlreadyExistsException {
         TreeElementImpl<K, V> element = new TreeElementImpl<K, V>(key, item);
         addElement(element, null);
     }
@@ -30,7 +33,7 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
         TreeTuple<K, V> tuple = search(key, null);
 
         if(tuple.child == null) {
-            System.out.println("Here an exception throw should be.");
+            throw (new ElementIsAbsentException(key));
         }
         else {
             if(tuple.child.getChild(false) != null) {
@@ -68,10 +71,10 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
     }
 
     protected void addElement(TreeElement<K, V> element, TreeElement<K, V> starting_element)
-                   throws BinaryTreeException {
+                   throws ElementAlreadyExistsException {
         TreeTuple<K, V> tuple = search(element.getKey(), starting_element);
         if(tuple.child != null) {
-            System.out.println("Here an exception throw should be.");
+            throw (new ElementAlreadyExistsException(tuple.child));
         }
         else {
             putElement(element, tuple.parent, tuple.is_big);
