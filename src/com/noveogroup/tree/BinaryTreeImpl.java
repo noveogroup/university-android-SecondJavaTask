@@ -3,16 +3,16 @@ package com.noveogroup.tree;
 import com.noveogroup.exception.ElementAlreadyExistsException;
 import com.noveogroup.exception.NoSuchTreeElementException;
 import com.noveogroup.model.DataStructure;
+import com.noveogroup.model.DataStructure.*;
 import com.noveogroup.model.TreeElement;
 
-import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
-@DataStructure({ DataStructure.OPERATION_ADD, DataStructure.OPERATION_REMOVE, DataStructure.OPERATION_ITERATE })
+@DataStructure(operations = { Operation.ADD, Operation.REMOVE, Operation.ITERATE }, type = StructureType.TREE)
 public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeElement>
         implements BinaryTree<K, V>, Serializable {
 

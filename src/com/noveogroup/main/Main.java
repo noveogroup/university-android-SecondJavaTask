@@ -72,17 +72,15 @@ public class Main {
 
     static void showInfo(Object obj) {
         Class<?> cls = obj.getClass();
-        for (Annotation at : cls.getAnnotations()) {
-            if (at.annotationType() == DataStructure.class) {
-                System.out.println(cls.getSimpleName() + " is a data structure with operations:");
-                DataStructure ds = (DataStructure)at;
-                for (int op : ds.value()) {
-                    System.out.println(DataStructure.OPERATIONS[op]);
-                }
-                return;
+        DataStructure ds = cls.getAnnotation(DataStructure.class);
+        if (ds != null) {
+            System.out.println(cls.getSimpleName() + " is a " + ds.type().name() + " data structure with operations:");
+            for (DataStructure.Operation op : ds.operations()) {
+                System.out.println(op.name());
             }
+        } else {
+            System.out.println(cls.getSimpleName() + " is not a data structure");
         }
-        System.out.println(cls.getSimpleName() + " is not a data structure");
     }
 
     static BinaryTree<Integer, TreeElement> generateTree() {

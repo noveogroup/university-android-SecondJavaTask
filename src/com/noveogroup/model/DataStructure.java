@@ -7,13 +7,10 @@ import java.lang.annotation.*;
 @Inherited
 public @interface DataStructure {
 
-    int OPERATION_ADD = 0,
-        OPERATION_REMOVE = 1,
-        OPERATION_GET = 2,
-        OPERATION_SET = 3,
-        OPERATION_ITERATE = 4;
-    String[] OPERATIONS = { "add", "remove", "get", "set", "iterate" };
+    enum Operation { ADD, REMOVE, GET, SET, ITERATE }
+    enum StructureType { ARRAY, LINKED_LIST, TREE, HASH_MAP }
 
-    public int[] value();
+    public Operation[] operations();
+    public StructureType type();
 
 }
