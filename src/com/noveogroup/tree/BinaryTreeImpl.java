@@ -2,14 +2,17 @@ package com.noveogroup.tree;
 
 import com.noveogroup.exception.ElementAlreadyExistsException;
 import com.noveogroup.exception.NoSuchTreeElementException;
+import com.noveogroup.model.TreeElement;
 
+import javax.naming.OperationNotSupportedException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.*;
 
-public class BinaryTreeImpl<K extends Comparable<? super K>,V> implements BinaryTree<K,V>, Serializable {
+public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeElement>
+        implements BinaryTree<K, V>, Serializable {
 
     private Node<K, V> root;
 
@@ -108,6 +111,14 @@ public class BinaryTreeImpl<K extends Comparable<? super K>,V> implements Binary
             @Override
             public V next() {
                 return values.get(index++);
+            }
+
+            /**
+             * This iterator can't remove elements from tree.
+             */
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
             }
         };
     }
