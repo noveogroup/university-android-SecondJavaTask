@@ -2,8 +2,8 @@ package com.noveogroup.item;
 
 import java.io.Serializable;
 
-public class TreeItem implements Serializable{
-    public void what() {
-        System.out.println("It can be put onto a tree.");
-    }
+public abstract class TreeItem implements Serializable{
+    boolean state;
+    public abstract void changeState();
+    public abstract boolean getState();
 }

@@ -1,9 +1,6 @@
 package com.noveogroup.tree;
 
-import com.noveogroup.exception.BinaryTreeException;
-import com.noveogroup.exception.ElementAlreadyExistsException;
-import com.noveogroup.exception.ElementIsAbsentException;
-import com.noveogroup.exception.TreeElementException;
+import com.noveogroup.exception.*;
 import com.noveogroup.model.TreeElement;
 import com.noveogroup.model.TreeElementImpl;
 import com.noveogroup.model.TreeTuple;
@@ -36,6 +33,9 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
             throw (new ElementIsAbsentException(key));
         }
         else {
+            if(!tuple.child.getItem().getState()) {
+                throw (new ElementImproperStateException(tuple.child.getItem()));
+            }
             if(tuple.child.getChild(false) != null) {
                 putElement(tuple.child.getChild(false), tuple.parent, tuple.is_big);
                 if(tuple.child.getChild(true) != null) {
@@ -130,6 +130,14 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException{
         stream.defaultReadObject();
-        System.out.println("The tree contains " + stream.readInt() + " elements.");
+        System.out.println("Overall quantity of elements has been read. " +
+                "The tree contains " + stream.readInt() + " elements.");
+    }
+
+    public void changeState(K key) {
+        TreeTuple<K, V> tuple = search(key, null);
+        if(tuple.child != null) {
+            tuple.child.getItem().changeState();
+        }
     }
 }
