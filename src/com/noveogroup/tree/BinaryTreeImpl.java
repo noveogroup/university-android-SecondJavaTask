@@ -125,6 +125,7 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
     private void writeObject(ObjectOutputStream stream) throws IOException{
         stream.defaultWriteObject();
         stream.writeInt(count());
+        stream.writeInt(countLeafs());
 
     }
 
@@ -132,6 +133,8 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
         stream.defaultReadObject();
         System.out.println("Overall quantity of elements has been read. " +
                 "The tree contains " + stream.readInt() + " elements.");
+        System.out.println("Quantity of leafs has been read. " +
+                "The tree contains " + stream.readInt() + " leafs.");
     }
 
     public void changeState(K key) {
@@ -139,5 +142,18 @@ public class BinaryTreeImpl<K extends Comparable<? super K>, V extends TreeItem>
         if(tuple.child != null) {
             tuple.child.getItem().changeState();
         }
+    }
+
+    @Override
+    public int countLeafs() {
+        Iterator<TreeElement<K, V>> iterator = getIterator();
+        int n = 0;
+        while(iterator.hasNext()) {
+            TreeElement<K, V> temp = iterator.next();
+            if(temp.getChild(true) == null && temp.getChild(false) == null) {
+                ++n;
+            }
+        }
+        return n;
     }
 }

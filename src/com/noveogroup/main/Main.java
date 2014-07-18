@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.Iterator;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         BinaryTreeImpl<Integer, TreeItem> tree = new BinaryTreeImpl<Integer, TreeItem>();
         Iterator<TreeElement<Integer, TreeItem>> iterator;
         try {
@@ -27,28 +27,9 @@ public class Main {
             System.out.print(tree.count() + " elements: ");
             iterator = tree.getIterator();
             while(iterator.hasNext()) {
-                System.out.print(iterator.next().getKey() + " ");
+                System.out.print(" " + iterator.next().getKey());
             }
-            System.out.println("\n==========");
-
-            System.out.println("Write the tree in file.");
-            FileOutputStream file_out = new FileOutputStream("tree.dat");
-            ObjectOutputStream stream_out = new ObjectOutputStream(file_out);
-            stream_out.writeObject(tree);
-            stream_out.close();
-
-            System.out.println("Read the tree from file.");
-            FileInputStream file_in = new FileInputStream("tree.dat");
-            ObjectInputStream stream_in = new ObjectInputStream(file_in);
-            @SuppressWarnings("unchecked")
-            BinaryTree<Integer, TreeItem> tree_from_file = (BinaryTree<Integer, TreeItem>)stream_in.readObject();
-            stream_in.close();
-            System.out.print("Elements of the tree from file: ");
-            iterator = tree_from_file.getIterator();
-            while(iterator.hasNext()) {
-                System.out.print(iterator.next().getKey() + " ");
-            }
-            System.out.println("\n==========");
+            System.out.println(". Number of leafs: " + tree.countLeafs());
 
             System.out.println("Try to add one more element.");
             tree.addElement(200, new Peach());
@@ -64,25 +45,50 @@ public class Main {
             }
         }
 
+        System.out.println("==========");
+        FileOutputStream file_out = new FileOutputStream("tree.dat");
+        ObjectOutputStream stream_out = new ObjectOutputStream(file_out);
         try {
-            System.out.println("==========");
+            System.out.println("Write the tree in file.");
+            stream_out.writeObject(tree);
+        } finally {
+            stream_out.close();
+        }
+
+        FileInputStream file_in = new FileInputStream("tree.dat");
+        ObjectInputStream stream_in = new ObjectInputStream(file_in);
+        try {
+            System.out.println("Read the tree from file.");
+            @SuppressWarnings("unchecked")
+            BinaryTree<Integer, TreeItem> tree_from_file = (BinaryTree<Integer, TreeItem>) stream_in.readObject();
+            System.out.print("Elements of the tree from file: ");
+            iterator = tree_from_file.getIterator();
+            while (iterator.hasNext()) {
+                System.out.print(iterator.next().getKey() + " ");
+            }
+            System.out.println("\n==========");
+        } finally {
+            stream_in.close();
+        }
+
+        try {
             System.out.println("Remove the root element.");
             tree.removeElement(100);
             System.out.print(tree.count() + " elements: ");
             iterator = tree.getIterator();
             while(iterator.hasNext()) {
-                System.out.print(iterator.next().getKey() + " ");
+                System.out.print(" " + iterator.next().getKey());
             }
-            System.out.println("");
+            System.out.println(". Number of leafs: " + tree.countLeafs());
 
             System.out.println("Remove one more element.");
             tree.removeElement(170);
             System.out.print(tree.count() + " elements: ");
             iterator = tree.getIterator();
             while(iterator.hasNext()) {
-                System.out.print(iterator.next().getKey() + " ");
+                System.out.print(" " + iterator.next().getKey());
             }
-            System.out.println("");
+            System.out.println(". Number of leafs: " + tree.countLeafs());
 
             System.out.println("Try to remove one more element.");
             tree.removeElement(500);
@@ -116,9 +122,10 @@ public class Main {
             System.out.print(tree.count() + " elements: ");
             iterator = tree.getIterator();
             while(iterator.hasNext()) {
-                System.out.print(iterator.next().getKey() + " ");
+                System.out.print(" " + iterator.next().getKey());
             }
-            System.out.println("\nThe Peach has been taken off.\nBon appetit!");
+            System.out.println(". Number of leafs: " + tree.countLeafs());
+            System.out.println("The Peach has been taken off.\nBon appetit!");
 
         } catch (BinaryTreeException exception) {
             System.out.println("This string is never printed.");

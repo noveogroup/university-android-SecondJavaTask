@@ -15,4 +15,5 @@ public interface BinaryTree <K,V> extends Serializable {
     void removeElement(K key) throws BinaryTreeException;
     Iterator<TreeElement<K, V>> getIterator();
     int count();
+    int countLeafs();
 }
