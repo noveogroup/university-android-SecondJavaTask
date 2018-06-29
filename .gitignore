@@ -1,5 +1,7 @@
-# IntelliJ Idea
-.idea
 *.iml
-build
-out
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
